@@ -4,14 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>at.fh.hagenberg.aist</groupId>
+    <groupId>science.aist</groupId>
     <artifactId>neo4j-imdb</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <properties>
         <neo4j.driver>4.1.1</neo4j.driver>
         <neo4j.version>3.2.14</neo4j.version>
         <spring.version>5.2.1.RELEASE</spring.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -37,9 +39,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>11</release>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
         </plugins>

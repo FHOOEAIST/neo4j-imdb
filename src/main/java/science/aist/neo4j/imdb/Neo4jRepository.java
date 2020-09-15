@@ -1,4 +1,4 @@
-package at.fh.hagenberg.aist.neo4j.imdb;
+package science.aist.neo4j.imdb;
 
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Transaction;

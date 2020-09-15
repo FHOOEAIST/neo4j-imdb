@@ -12,16 +12,16 @@
         <constructor-arg ref="authToken"/>
     </bean>
 
-    <bean class="at.fh.hagenberg.aist.neo4j.imdb.Neo4jRepository" id="repository">
+    <bean class="science.aist.neo4j.imdb.Neo4jRepository" id="repository">
         <constructor-arg name="driver" ref="driver"/>
     </bean>
 
-    <bean class="at.fh.hagenberg.aist.neo4j.imdb.Importer" id="importer">
+    <bean class="science.aist.neo4j.imdb.Importer" id="importer">
         <constructor-arg name="repository" ref="repository"/>
         <constructor-arg name="tsv2CSV" ref="tsv2CSV"/>
     </bean>
 
-    <bean class="at.fh.hagenberg.aist.neo4j.imdb.TSV2CSV" id="tsv2CSV">
+    <bean class="science.aist.neo4j.imdb.TSV2CSV" id="tsv2CSV">
         <constructor-arg name="neo4jDatabasePath" value="C:\Public\neo4j-community-4.1.1\"/>
     </bean>
 

@@ -1,41 +1,48 @@
-package at.fh.hagenberg.aist.neo4j.imdb;
+package science.aist.neo4j.imdb;
 
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * <p>Converts the tsv files from imdb to csv files that can be processed by neo4j csv importer</p>
  * <p>It creates batches with 10.000 entries each file</p>
  * <p>The tsv files can be found <a href="https://datasets.imdbws.com/">here</a> and need to be added to the resource
  * folder since the data must not be republished</p>
+ *
  * @see <a href="https://www.imdb.com/interfaces/">IMDB Interfaces</a>
  */
 public class TSV2CSV {
 
+    public static final String IMPORT = "import";
+    public static final String MY_DATA = "myData";
     private final String neo4jDatabasePath;
 
     public TSV2CSV(String neo4jDatabasePath) {
         this.neo4jDatabasePath = neo4jDatabasePath;
     }
 
-    public void processPerson() throws Exception {
+    /**
+     * Converts the name.basic.tsv into a csv file for bulk imports
+     *
+     * @return the number of created .csv files
+     * @throws IOException input stream
+     */
+    public int processPerson() throws IOException {
         String thisLine;
         ClassPathResource classPathResource = new ClassPathResource("name.basics.tsv");
         int i = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()))) {
             while (true) {
-                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath+"import"+File.separator+"myData" + i + ".csv")))) {
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath + IMPORT + File.separator + MY_DATA + i + ".csv")))) {
                     i++;
                     br.readLine(); // skip first line
-                    bw.write("id,name,dob,dod,isActor,isDirector,isManager,isWriter");
+                    // id, name, date of birth, date of death, primaryProfession (array), knowForTitles (array)
+                    bw.write("id,name,dob,dod,pp,kft");
                     bw.newLine();
                     int j = 0;
                     while ((thisLine = br.readLine()) != null) {
                         String[] split = thisLine.split("\t");
-                        List<String> primaryProfession = Arrays.asList(split[4].split(","));
                         bw.write(split[0]);
                         bw.write(",");
                         bw.write(split[1].replace("\"", ""));
@@ -44,13 +51,9 @@ public class TSV2CSV {
                         bw.write(",");
                         bw.write(split[3]);
                         bw.write(",");
-                        bw.write(String.valueOf(primaryProfession.contains("actor") || primaryProfession.contains("actress")));
+                        bw.write(split[4].replace("\"", "").replace(",", ";"));
                         bw.write(",");
-                        bw.write(String.valueOf(primaryProfession.contains("director")));
-                        bw.write(",");
-                        bw.write(String.valueOf(primaryProfession.contains("manager")));
-                        bw.write(",");
-                        bw.write(String.valueOf(primaryProfession.contains("writer")));
+                        bw.write(split[5].replace("\"", "").replace(",", ";"));
                         bw.newLine();
                         if (++j >= 10000) {
                             break;
@@ -62,15 +65,22 @@ public class TSV2CSV {
                 }
             }
         }
+        return i - 1;
     }
 
-    public void processRelations() throws Exception {
+    /**
+     * Converts the title.principals.tsv into a csv file for bulk imports
+     *
+     * @return the number of created .csv files
+     * @throws IOException input stream
+     */
+    public int processRelations() throws IOException {
         String thisLine;
         ClassPathResource classPathResource = new ClassPathResource("title.principals.tsv");
         int i = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()))) {
             while (true) {
-                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath+"import"+File.separator+"myData" + i + ".csv")))) {
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath + IMPORT + File.separator + MY_DATA + i + ".csv")))) {
                     i++;
                     br.readLine(); // skip first line
                     bw.write("titleid,personid,category,job,characters");
@@ -98,18 +108,25 @@ public class TSV2CSV {
                 }
             }
         }
+        return i - 1;
     }
 
-    public void processMovies() throws Exception {
+    /**
+     * Converts the title.basic.tsv into a csv file for bulk imports
+     *
+     * @return the number of created .csv files
+     * @throws IOException input stream
+     */
+    public int processMovies() throws IOException {
         String thisLine;
         ClassPathResource classPathResource = new ClassPathResource("title.basics.tsv");
         int i = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()))) {
             while (true) {
-                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath+"import"+File.separator+"myData" + i + ".csv")))) {
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath + IMPORT + File.separator + MY_DATA + i + ".csv")))) {
                     i++;
                     br.readLine(); // skip first line
-                    bw.write("id,name,type,isAdult,startYear,endYear,runtimeMinutes,genres");
+                    bw.write("id,name,primTitle,type,isAdult,startYear,endYear,runtimeMinutes,genres");
                     bw.newLine();
                     int j = 0;
                     while ((thisLine = br.readLine()) != null) {
@@ -117,6 +134,8 @@ public class TSV2CSV {
                         bw.write(split[0]);
                         bw.write(",");
                         bw.write(split[3].replace("\"", ""));
+                        bw.write(",");
+                        bw.write(split[2].replace("\"", ""));
                         bw.write(",");
                         bw.write(split[1]);
                         bw.write(",");
@@ -140,5 +159,6 @@ public class TSV2CSV {
                 }
             }
         }
+        return i - 1;
     }
 }

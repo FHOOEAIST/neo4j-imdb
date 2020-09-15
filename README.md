@@ -19,6 +19,8 @@ According to the license model of the imdb dataset, the used source files are no
 able to use the provided importer the mentioned files (`name.basics.tsv`, `title.principals.tsv`, `title.basics.tsv`) 
 have to be included in the resources folder of this project.
 
+The imdb data is available under the following link [https://datasets.imdbws.com/](https://datasets.imdbws.com/), and the documentation to the interfaces can be found here [https://www.imdb.com/interfaces/](https://www.imdb.com/interfaces/).
+
 ### Neo4j database 
 
 In order to import the data a neo4j database has to be running on your system. The configuration of the connection 

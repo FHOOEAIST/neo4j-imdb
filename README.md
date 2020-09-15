@@ -1,5 +1,5 @@
 # neo4j-imdb
-Creates a simple neo4j database based on the imdb dataset
+Imports the IMDB dataset to a neo4j database.
 
 ## How to use
 
@@ -12,6 +12,8 @@ The project was tested with the following software requirements:
  - [Maven](https://maven.apache.org/) 3.6.3 
  - [OpenJDK](https://openjdk.java.net/) 11.0.5_10
  - [Neo4j](https://neo4j.com/) community 4.1.1
+ 
+Please ensure that the required software is available on your system.
 
 ### IMDB-data
 
@@ -26,11 +28,11 @@ The imdb data is available under the following link [https://datasets.imdbws.com
 In order to import the data a neo4j database has to be running on your system. The configuration of the connection 
 must be adapted in the `resources/neo4j-config.xml` file.
 
-For importing the data into the database a csv bulk import statement is used. To perform this statement the csv files are exported in the database's import directory. For this, the neo4j installation direction has to be filled in the `neo4j-config.xml` as a constructor argument (`neo4jDatabasePath`) of the `TSV2CSV` class.
+For importing the data into the database a csv bulk import statement is used. To perform this statement the csv files are exported in the database's import directory. For this, the neo4j installation directory has to be defined in the `neo4j-config.xml` as a constructor argument (`neo4jDatabasePath`) of the `TSV2CSV` class.
 
 ### How to run
 
-To start the import simple run the main function in the `Neo4jImdbMain` class.
+To start the import process, run the main function in the `Neo4jImdbMain` class.
 
 ## Contact
 

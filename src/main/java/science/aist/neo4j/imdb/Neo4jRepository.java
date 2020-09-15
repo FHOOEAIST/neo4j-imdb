@@ -1,6 +1,7 @@
 package science.aist.neo4j.imdb;
 
 import org.neo4j.driver.Driver;
+import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 
 /**
@@ -15,8 +16,10 @@ public class Neo4jRepository implements Repository {
 
     @Override
     public void query(String query) {
-        try(Transaction transaction = driver.session().beginTransaction()) {
+        try(Session session = driver.session();
+            Transaction transaction = session.beginTransaction()) {
             transaction.run(query);
+            transaction.commit();
         }
     }
 }

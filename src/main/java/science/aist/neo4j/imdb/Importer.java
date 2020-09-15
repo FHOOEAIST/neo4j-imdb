@@ -29,7 +29,7 @@ public class Importer implements Runnable {
             cnt = tsv2CSV.processMovies();
             for(int i = 0; i <= cnt; i++) {
                 String statement = "LOAD CSV WITH HEADERS FROM 'file:///myData"+i+".csv' AS row\n " +
-                        "CREATE (e:Movie {id: row.id, originalTitle: row.name, primaryTitle: row.primTitle type: row.type, isAdult: toBoolean(row.isAdult), startYear: toInteger(row.startYear), endYear: toInteger(row.endYear), runtimeMinutes: toInteger(row.runtimeMinutes), genres: split(row.genres, \";\")})";
+                        "CREATE (e:Movie {id: row.id, originalTitle: row.name, primaryTitle: row.primTitle, type: row.type, isAdult: toBoolean(row.isAdult), startYear: toInteger(row.startYear), endYear: toInteger(row.endYear), runtimeMinutes: toInteger(row.runtimeMinutes), genres: split(row.genres, \";\")})";
                 repository.query(statement);
                 System.out.println("done: " + i);
             }

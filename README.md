@@ -31,3 +31,9 @@ To start the import simple run the main function in the `Neo4jImdbMain` class.
 ## Contact
 
 If you have any questions please contact us: [contact@aist.science](mailto:contact@aist.science).
+
+## Scientific Work
+
+If you are using this repository inside a research publication, we would ask you to cite us:
+
+[![DOI](https://zenodo.org/badge/287279035.svg)](https://zenodo.org/badge/latestdoi/287279035)

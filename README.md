@@ -19,7 +19,9 @@ Please ensure that the required software is available on your system.
 
 According to the license model of the imdb dataset, the used source files are not included in this repository. To be 
 able to use the provided importer the mentioned files (`name.basics.tsv`, `title.principals.tsv`, `title.basics.tsv`) 
-have to be included in the resources folder of this project.
+have to be included in the resources folder of this project. Then you can specify the number of relations to be imported
+by changing the `max`-parameter of `tsv2CSV.processRelations(max)` in the Importer class. Like this you can import
+only a subset of the whole dataset.
 
 The imdb data is available under the following link [https://datasets.imdbws.com/](https://datasets.imdbws.com/), and the documentation to the interfaces can be found here [https://www.imdb.com/interfaces/](https://www.imdb.com/interfaces/).
 

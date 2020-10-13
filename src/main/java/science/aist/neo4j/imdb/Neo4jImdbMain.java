@@ -1,6 +1,5 @@
 package science.aist.neo4j.imdb;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -8,8 +7,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Neo4jImdbMain {
     public static void main(String[] args) {
-        ApplicationContext appContext = new ClassPathXmlApplicationContext("neo4j-config.xml");
-        Runnable importer = appContext.getBean("importer", Runnable.class);
-        importer.run();
+        try(ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("neo4j-config.xml")) {
+            appContext.getBean("importer", Runnable.class).run();
+        }
     }
 }

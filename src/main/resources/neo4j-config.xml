@@ -18,11 +18,11 @@
 
     <bean class="science.aist.neo4j.imdb.Importer" id="importer">
         <constructor-arg name="repository" ref="repository"/>
-        <constructor-arg name="tsv2CSV" ref="tsv2CSV"/>
+        <constructor-arg name="tsv2CSV" ref="tsv2CSV2"/>
     </bean>
 
-    <bean class="science.aist.neo4j.imdb.TSV2CSV" id="tsv2CSV">
-        <constructor-arg name="neo4jDatabasePath" value="C:\Public\neo4j-community-4.1.1\"/>
+    <bean class="science.aist.neo4j.imdb.TSV2CSV" id="tsv2CSV2">
+        <constructor-arg name="neo4jDatabasePath" value="C:\Public\neo4j-community-4.1.1-Franz\"/>
     </bean>
 
 </beans>

@@ -19,6 +19,7 @@
     <bean class="science.aist.neo4j.imdb.Importer" id="importer">
         <constructor-arg name="repository" ref="repository"/>
         <constructor-arg name="tsv2CSV" ref="tsv2CSV2"/>
+        <constructor-arg name="maxRelations" value="100000000"/>
     </bean>
 
     <bean class="science.aist.neo4j.imdb.TSV2CSV" id="tsv2CSV2">

@@ -39,10 +39,10 @@ public class TSV2CSV {
         ClassPathResource classPathResource = new ClassPathResource("name.basics.tsv");
         int i = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()))) {
+            br.readLine(); // skip first line
             while (true) {
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath + IMPORT + File.separator + MY_DATA + i + "person.csv")))) {
                     i++;
-                    br.readLine(); // skip first line
                     // id, name, date of birth, date of death, primaryProfession (array), knowForTitles (array)
                     bw.write("id,name,dob,dod,pp,kft");
                     bw.newLine();
@@ -87,18 +87,44 @@ public class TSV2CSV {
         personId = new HashSet<>();
         int count = 0;
         String thisLine;
+        Set<String> existingMovieIds = new HashSet<>();
+        ClassPathResource classPathResourceMovies = new ClassPathResource("title.basics.tsv");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResourceMovies.getInputStream()))) {
+            br.readLine(); // skip first line
+            while ((thisLine = br.readLine()) != null) {
+                String[] split = thisLine.split("\t");
+                existingMovieIds.add(split[0]);
+            }
+        }
+
+        Set<String> existingActorIds = new HashSet<>();
+        ClassPathResource classPathResourceActors = new ClassPathResource("name.basics.tsv");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResourceActors.getInputStream()))) {
+            br.readLine(); // skip first line
+            while ((thisLine = br.readLine()) != null) {
+                String[] split = thisLine.split("\t");
+                existingActorIds.add(split[0]);
+            }
+        }
+
+
         ClassPathResource classPathResource = new ClassPathResource("title.principals.tsv");
         int i = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()))) {
+            br.readLine(); // skip first line
             while (true) {
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath + IMPORT + File.separator + MY_DATA + i + "rel.csv")))) {
                     i++;
-                    br.readLine(); // skip first line
+
                     bw.write("titleid,personid,category,job,characters");
                     bw.newLine();
                     int j = 0;
                     while ((thisLine = br.readLine()) != null) {
                         String[] split = thisLine.split("\t");
+                        if(!existingActorIds.contains(split[2]) || !existingMovieIds.contains(split[0])){
+                            continue;
+                        }
+
                         movieId.add(split[0]);
                         personId.add(split[2]);
                         bw.write(split[0]);
@@ -137,10 +163,11 @@ public class TSV2CSV {
         ClassPathResource classPathResource = new ClassPathResource("title.basics.tsv");
         int i = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()))) {
+            br.readLine(); // skip first line
             while (true) {
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(neo4jDatabasePath + IMPORT + File.separator + MY_DATA + i + "movie.csv")))) {
                     i++;
-                    br.readLine(); // skip first line
+
                     bw.write("id,name,primTitle,type,isAdult,startYear,endYear,runtimeMinutes,genres");
                     bw.newLine();
                     int j = 0;
